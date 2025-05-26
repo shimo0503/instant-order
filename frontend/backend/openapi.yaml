@@ -1,0 +1,427 @@
+openapi: 3.0.0
+info:
+  title: instant order backend API
+  description: this is API design
+servers:
+  - url: http://localhost:8000
+paths:
+  /api/product:
+    get:
+      tags:
+        - product
+      responses:
+        '200':
+          content:
+            application.json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        code:
+                          type: string
+                        price:
+                          type: integer
+                        rest:
+                          type: integer
+    post:
+      tags:
+        - product
+      summary: Get products with condition (e.g. provided)
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                provided:
+                  type: boolean
+      responses:
+        '200':
+          content:
+            application.json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        code:
+                          type: string
+                        price:
+                          type: integer
+                        rest:
+                          type: integer
+
+  /api/rest:
+    post:
+      tags:
+        - product
+      summary: Register or update product stock
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - name
+                - rest
+              properties:
+                name:
+                  type: string
+                rest:
+                  type: integer
+      responses:
+        '201':
+          description: success
+          content:
+            application.json:
+              schema:
+                $ref: "#/components/schemas/registerSchema"
+        '400':
+          description: failed
+          content:
+            application.json:
+              schema:
+                $ref: "#/components/schemas/registerSchema"
+
+  /api/Menu/new:
+    post:
+      tags:
+        - menu
+      summary: Create a new menu item
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                code:
+                  type: string
+                price:
+                  type: integer
+                rest:
+                  type: integer
+      responses:
+        '201':
+          description: success
+          content:
+            application.json:
+              schema:
+                $ref: "#/components/schemas/registerSchema"
+        '400':
+          description: failed
+          content:
+            application.json:
+              schema:
+                $ref: "#/components/schemas/registerSchema"
+
+  /api/order/new:
+    post:
+      tags:
+        - menu
+      summary: Create new order (raw input, unclear format)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "y"
+      responses:
+        '201':
+          description: success
+          content:
+            application.json:
+              schema:
+                $ref: "#/components/schemas/registerSchema"
+        '400':
+          description: failed
+          content:
+            application.json:
+              schema:
+                $ref: "#/components/schemas/registerSchema"
+
+  /api/order/add:
+    post:
+      tags:
+        - menu
+      summary: Add detailed order
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - table_number
+                - data
+              properties:
+                table_number:
+                  type: integer
+                data:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - name
+                      - quantity
+                    properties:
+                      name:
+                        type: string
+                      quantity:
+                        type: integer
+      responses:
+        '201':
+          description: success
+          content:
+            application.json:
+              schema:
+                $ref: "#/components/schemas/registerSchema"
+        '400':
+          description: failed
+          content:
+            application.json:
+              schema:
+                $ref: "#/components/schemas/registerSchema"
+
+  /api/pay:
+    post:
+      tags:
+        - customer
+      summary: Pay for a table
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - table_number
+              properties:
+                table_number:
+                  type: integer
+      responses:
+        '201':
+          description: success
+          content:
+            application.json:
+              schema:
+                $ref: "#/components/schemas/registerSchema"
+        '400':
+          description: failed
+          content:
+            application.json:
+              schema:
+                $ref: "#/components/schemas/registerSchema"
+
+  /api/customer:
+    get:
+      tags:
+        - customer
+      summary: Get all customers
+      responses:
+        '200':
+          description: List of customers
+          content:
+            application.json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        made_at: 
+                          type: string
+                        table_number:
+                          type: integer
+                        paycheck:
+                          type: boolean
+                        price:
+                          type: integer
+  /api/order/get:
+    get:
+      summary: Get all customer product orders
+      tags:
+        - menu
+      description: Returns a list of all customer orders with nested customer and product details.
+      responses:
+        '200':
+          description: A list of customer orders
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "200"
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 7
+                        made_at:
+                          type: string
+                          format: date-time
+                        quantity:
+                          type: integer
+                          example: 2
+                        provided:
+                          type: boolean
+                          example: false
+                        customer:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 14
+                            made_at:
+                              type: string
+                              format: date-time
+                            table_number:
+                              type: integer
+                              example: 5
+                            paycheck:
+                              type: boolean
+                              example: false
+                            price:
+                              type: integer
+                              example: 1500
+                            products:
+                              type: array
+                              items:
+                                type: integer
+                        product:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 2
+                            name:
+                              type: string
+                              example: "Pizza"
+                            code:
+                              type: string
+                              example: "PZ001"
+                            price:
+                              type: integer
+                              example: 800
+                            rest:
+                              type: integer
+                              example: 12
+  /api/provide:
+    post:
+      summary: Toggle provided status
+      description: This endpoint toggles the `provided` status of a `CustomerProduct` by name.
+      tags:
+        - product
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: The name of the customer product.
+              required:
+                - name
+      responses:
+        '201':
+          description: Success response. Product status was toggled.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "201"
+                  data:
+                    type: string
+                    example: "success"
+        '400':
+          description: Bad request. The product could not be found or input was invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "400"
+                  data:
+                    type: string
+                    example: "Request Error."
+  /api/sales:
+    get:
+      summary: 売上データを取得
+      description: データベースに保存されている売上情報をすべて取得します。
+      tags:
+        - customer
+      responses:
+        '200':
+          description: 正常に売上データを取得
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "200"
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Sale'
+        '500':
+          description: サーバーエラー
+components:
+  schemas:
+    registerSchema:
+      type: object
+      properties:
+        status:
+          type: string
+        data:
+          type: string
+    Sale:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        date:
+          type: string
+          format: date-time
+          example: "2025-05-09T12:34:56Z"
+        price:
+          type: integer
+          example: 1000

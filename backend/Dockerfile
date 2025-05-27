@@ -1,5 +1,7 @@
 FROM php:8.4-fpm
 
+WORKDIR /var/www
+
 # 必要なパッケージ
 RUN apt-get update && apt-get install -y \
     git zip unzip curl libpng-dev libonig-dev libxml2-dev \
@@ -8,6 +10,4 @@ RUN apt-get update && apt-get install -y \
 # Composerインストール
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-WORKDIR /var/www
-
-# Laravelインストールなどはvolume側でやる
+CMD ["php", "artisan", "serve"]

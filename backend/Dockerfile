@@ -9,5 +9,3 @@ RUN apt-get update && apt-get install -y \
 
 # Composerインストール
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-
-CMD ["php", "artisan", "serve"]

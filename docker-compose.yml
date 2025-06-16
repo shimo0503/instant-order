@@ -8,6 +8,7 @@ services:
       - "8000:8000"
     volumes:
       - ./backend/src:/var/www
+    command: "php artisan serve --host=0.0.0.0 --port=8000"
     depends_on:
       - db
     environment:

@@ -16,6 +16,16 @@ class User extends Model
         'password',
     ];
 
+    public function getJWTdentifier()
+    {
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
+
     public function customers() {
         return $this->belongsTo(Customer::class);
     }

@@ -8,7 +8,8 @@ services:
       - "8000:8000"
     volumes:
       - ./backend/src:/var/www
-    command: "php artisan serve --host=0.0.0.0 --port=8000"
+      - /var/www/vendor
+    command: sh -c "composer install && php artisan serve --host=0.0.0.0 --port=8000"
     depends_on:
       - db
     environment:
@@ -25,7 +26,8 @@ services:
       - "3000:3000"
     volumes:
       - ./frontend/src:/app
-    command: "npm run dev"
+      - /app/node_modules
+    command: sh -c "npm install && npm run dev"
     working_dir: /app
 
   db:

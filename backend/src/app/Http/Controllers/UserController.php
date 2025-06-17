@@ -2,20 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\User;
+use App\Http\Resources\ErrorResource;
+use Illuminate\Support\Facades\Log;
+use App\Http\Requests\User\UserRegisterRequest;
+use App\Http\Resources\CreateResource;
+use Illuminate\Database\QueryException;
+use App\UseCase\User\CreateAction;
 
 class UserController extends Controller
 {
-    public function register(Request $request)
+    public function register(UserRegisterRequest $request, CreateAction $action)
     {
-        $user = User::create([
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-        ]);
+        $userdata = $request->validated();
 
-        return response()->json([
-            'message' => 'ユーザ登録に成功しました。'
-        ], 201);
+        try {
+            return new CreateResource(
+                $action($userdata['email'], $userdata['password'])
+            )->response()->setStatusCode('201');
+        } catch(QueryException $e) {
+            Log::error("ユーザ作成に失敗しました。");
+            return new ErrorResource([
+                'error' => 'ユーザ作成に失敗しました。',
+                'message' => $e->getMessage()
+            ])->response()->setStatusCode(401);
+        }
     }
 }

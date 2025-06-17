@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class SuccessResource extends JsonResource
+class CreateResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,8 +15,9 @@ class SuccessResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'code' => '200',
-            'message' => $this->resource[('message')]
+            'code' => '201',
+            'message' => '作成に成功しました。',
+            'data' => $this->resource
         ];
     }
 }

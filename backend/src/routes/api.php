@@ -11,5 +11,6 @@ Route::post('/user/register', [UserController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout']);
 Route::middleware(JwtCookieMiddleware::class)->group(function () {
+    Route::get('/product', [ProductController::class, 'read']);
     Route::post('/product/create', [ProductController::class, 'create']);
 });

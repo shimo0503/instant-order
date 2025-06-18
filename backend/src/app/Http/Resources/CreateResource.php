@@ -15,7 +15,7 @@ class CreateResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'code' => '201',
+            'code' => 201,
             'message' => '作成に成功しました。',
             'data' => $this->resource
         ];

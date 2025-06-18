@@ -15,7 +15,7 @@ class ErrorResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'code' => '400',
+            'code' => 400,
             'error' => $this->resource['error'],
             'message' => $this->resource['message']
         ];

@@ -15,7 +15,7 @@ class SuccessResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'code' => '200',
+            'code' => 200,
             'message' => $this->resource[('message')]
         ];
     }

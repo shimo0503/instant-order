@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Log;
 use App\Http\Requests\Product\ProductCreateRequest;
 use App\UseCase\Product\ProductCreateAction;
+use App\UseCase\Product\ProductGetAction;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\CreateResource;
 use App\Http\Resources\ErrorResource;
+use App\Http\Resources\ProductResource;
 use Illuminate\Database\QueryException;
 
 class ProductController extends Controller
@@ -31,8 +33,15 @@ class ProductController extends Controller
         }
     }
     
-    public function read()
+    public function read(ProductGetAction $action)
     {
-
+        $user = Auth::user();
+        return ProductResource::collection(
+            $action($user)
+        )->additional([
+            'code' => '200',
+            'message' => '商品の取得に成功しました。'
+        ])
+        ->response()->setStatusCode('200');
     }
 }

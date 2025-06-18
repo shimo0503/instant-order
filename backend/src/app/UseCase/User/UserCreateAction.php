@@ -5,7 +5,7 @@ namespace App\UseCase\User;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 
-class CreateAction
+class UserCreateAction
 {
     public function __invoke($email, $password)
     {

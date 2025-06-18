@@ -7,11 +7,11 @@ use Illuminate\Support\Facades\Log;
 use App\Http\Requests\User\UserRegisterRequest;
 use App\Http\Resources\CreateResource;
 use Illuminate\Database\QueryException;
-use App\UseCase\User\CreateAction;
+use App\UseCase\User\UserCreateAction;
 
 class UserController extends Controller
 {
-    public function register(UserRegisterRequest $request, CreateAction $action)
+    public function register(UserRegisterRequest $request, UserCreateAction $action)
     {
         $userdata = $request->validated();
 

@@ -23,12 +23,4 @@ class ProductResource extends JsonResource
             'updated_at' => $this->updated_at
         ];
     }
-    
-    public function with($request)
-    {
-        return [
-            'code' => 200,
-            'message' => '商品の取得に成功しました。'
-        ];
-    }
 }

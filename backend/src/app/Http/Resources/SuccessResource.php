@@ -7,6 +7,13 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class SuccessResource extends JsonResource
 {
+    protected string $message = 'リクエストに成功しました。';
+
+    public function withMessage(string $message): static
+    {
+        $this->message = $message;
+        return $this;
+    }
     /**
      * Transform the resource into an array.
      *
@@ -16,7 +23,8 @@ class SuccessResource extends JsonResource
     {
         return [
             'code' => 200,
-            'message' => $this->resource[('message')]
+            'message' => $this->message,
+            'data' => $this->resource
         ];
     }
 }

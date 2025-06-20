@@ -12,5 +12,6 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout']);
 Route::middleware(JwtCookieMiddleware::class)->group(function () {
     Route::get('/product', [ProductController::class, 'read']);
-    Route::post('/product/create', [ProductController::class, 'create']);
+    Route::post('/product', [ProductController::class, 'create']);
+    Route::put('/product', [ProductCOntroller::class, 'update']);
 });

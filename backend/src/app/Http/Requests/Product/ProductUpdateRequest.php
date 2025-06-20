@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Validation\ValidationException;
 
-class ProductCreateRequest extends FormRequest
+class ProductUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +24,21 @@ class ProductCreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:50'],
-            'price' =>['required', 'integer', 'min:0'],
-            'rest' =>['required', 'integer', 'min:0']
+            'id' => ['required', 'integer', 'min:0'],
+            'name' => ['nullable', 'string', 'max:50'],
+            'price' =>['nullable', 'integer', 'min:0'],
+            'rest' =>['nullable', 'integer', 'min:0']
+        ];
+    }
+
+    public function message(): array
+    {
+        return [
+            'id.required' => 'idフィールドは必須です。',
+            'id.min' => 'idは:min以上にしてください。',
+            'name.max' => '名前は:max文字以下にしてください。',
+            'price.min' => '値段は:min以上にしてください。',
+            'rest.min' => '残数は:min以上にしてください。'
         ];
     }
 

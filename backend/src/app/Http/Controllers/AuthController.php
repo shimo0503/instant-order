@@ -24,9 +24,8 @@ class AuthController extends Controller
         try{
             $token = $auth_action->login($credentials);
 
-            return new SuccessResource([
-                'message' => 'ログインに成功しました。'
-            ])
+            return new SuccessResource(null)
+            ->withMessage('ログインに成功しました。')
             ->response()
             ->setStatusCode(200)
             ->cookie(
@@ -57,9 +56,9 @@ class AuthController extends Controller
                 JWTAuth::setToken($token)->invalidate();
             }
 
-            return new SuccessResource([
-                'message' => 'ログアウトに成功しました。'
-            ])->response()->setStatusCode(200)
+            return new SuccessResource(null)
+            ->withMessage('ログアウトに成功しました。')
+            ->response()->setStatusCode(200)
             ->cookie(
                 'token',
                 '', // 空にする

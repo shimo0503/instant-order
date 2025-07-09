@@ -6,8 +6,8 @@
  */
 
 export type PostApiProduct200DataItem = {
-  name?: string;
   code?: string;
+  name?: string;
   price?: number;
   rest?: number;
 };

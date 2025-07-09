@@ -6,6 +6,6 @@
  */
 
 export interface RegisterSchema {
-  status?: string;
   data?: string;
+  status?: string;
 }

@@ -7,7 +7,7 @@
 
 export type GetApiCustomer200DataItem = {
   made_at?: string;
-  table_number?: number;
   paycheck?: boolean;
   price?: number;
+  table_number?: number;
 };

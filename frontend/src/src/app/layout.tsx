@@ -1,8 +1,13 @@
 "use client";
 import type { Metadata } from "next";
-import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter";
-import { Inter } from "next/font/google";
+
 import "./globals.css";
+import AttachMoneyOutlinedIcon from '@mui/icons-material/AttachMoneyOutlined';
+import FormatAlignJustifyOutlinedIcon from '@mui/icons-material/FormatAlignJustifyOutlined';
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
+import LocalDiningOutlinedIcon from '@mui/icons-material/LocalDiningOutlined';
+import LocalMallOutlinedIcon from '@mui/icons-material/LocalMallOutlined';
+import PaymentOutlinedIcon from '@mui/icons-material/PaymentOutlined';
 import {
   Box,
   CssBaseline,
@@ -16,22 +21,20 @@ import {
   ListItemIcon,
   ListItemText,
 } from "@mui/material";
-import SidebarData from "@/components/SidebarData";
+import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter";
+import { Inter } from "next/font/google";
 import Link from "next/link";
-import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
-import PaymentOutlinedIcon from '@mui/icons-material/PaymentOutlined';
-import AttachMoneyOutlinedIcon from '@mui/icons-material/AttachMoneyOutlined';
-import LocalDiningOutlinedIcon from '@mui/icons-material/LocalDiningOutlined';
-import LocalMallOutlinedIcon from '@mui/icons-material/LocalMallOutlined';
-import FormatAlignJustifyOutlinedIcon from '@mui/icons-material/FormatAlignJustifyOutlined';
 import { useState, useEffect } from "react";
+
+import SidebarData from "@/components/SidebarData";
+
 import RootProvider from "./context/RootProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
 const metadata: Metadata = {
-  title: "instant order",
   description: "注文や会計を行えます。",
+  title: "instant order",
 };
 const drawerWidth = 240;
 
@@ -63,7 +66,7 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <title>{metadata.title as string}</title>
-        <meta name="description" content={metadata.description as string} />
+        <meta content={metadata.description as string} name="description" />
       </head>
       <body className={inter.className}>
         <AppRouterCacheProvider>
@@ -74,22 +77,22 @@ export default function RootLayout({
                 sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
               >
                 <Toolbar>
-                  <Typography variant="h6" noWrap component="div">
+                  <Typography component="div" noWrap variant="h6">
                     <Link href='/'>instant order</Link>
                   </Typography>
                 </Toolbar>
               </AppBar>
             {!isMobile && (
               <Drawer
-                variant="permanent"
                 sx={{
-                  width: drawerWidth,
-                  flexShrink: 0,
                   [`& .MuiDrawer-paper`]: {
-                    width: drawerWidth,
                     boxSizing: "border-box",
+                    width: drawerWidth,
                   },
+                  flexShrink: 0,
+                  width: drawerWidth,
                 }}
+                variant="permanent"
               >
                 <Toolbar />
                 <Box sx={{ overflow: "auto" }}>

@@ -1,14 +1,16 @@
 "use client"
 
+import { Box } from "@mui/material"
+
 import Header from "@/components/Header"
 import { useGetApiProduct } from "@/generated/backend/product/product"
-import { Box } from "@mui/material"
+
 import Menu from "./_component/Menu"
 
 // ヘッダー
 const headerData = {
-    title: "メニュー一覧",
-    description: "登録されたメニューとその残数、値段を表示します。"
+    description: "登録されたメニューとその残数、値段を表示します。",
+    title: "メニュー一覧"
 }
 
 const MenuPage = () => {
@@ -22,9 +24,9 @@ const MenuPage = () => {
     else {
         return (
             <Box>
-                <Header title={headerData.title} description={headerData.description}/>
+                <Header description={headerData.description} title={headerData.title}/>
                 {data?.data?.map((data, index) => (
-                    <Menu key={index} name={data.name} rest={data.rest} price={data.price}/>
+                    <Menu key={index} name={data.name} price={data.price} rest={data.rest}/>
                 ))}
             </Box>
         )

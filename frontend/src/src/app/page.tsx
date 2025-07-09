@@ -1,19 +1,20 @@
 import { Box } from "@mui/material";
-import SidebarData from "@/components/SidebarData";
+
 import LinkCard from "@/components/LinkCard";
+import SidebarData from "@/components/SidebarData";
 
 const Home = () => {
   return (
     <Box sx={
       {
         display: "grid",
-        gridTemplateColumns: 'repeat(2, 1fr)',
-        gap: '64px'
+        gap: '64px',
+        gridTemplateColumns: 'repeat(2, 1fr)'
       }
     }>
       {SidebarData.map(
         (data, index) => (
-          <LinkCard title={data.title} index={index} link={data.link} key={index} />
+          <LinkCard index={index} key={index} link={data.link} title={data.title} />
         )
       )}
     </Box>

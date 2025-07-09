@@ -1,8 +1,8 @@
 import { Box, Typography } from "@mui/material"
 
 type headerProps = {
-    title: string,
-    description: string
+    description: string,
+    title: string
 }
 
 const Header = (props: headerProps) => {

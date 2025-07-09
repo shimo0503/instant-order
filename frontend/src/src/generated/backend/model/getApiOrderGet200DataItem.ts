@@ -8,10 +8,10 @@ import type { GetApiOrderGet200DataItemCustomer } from './getApiOrderGet200DataI
 import type { GetApiOrderGet200DataItemProduct } from './getApiOrderGet200DataItemProduct';
 
 export type GetApiOrderGet200DataItem = {
+  customer?: GetApiOrderGet200DataItemCustomer;
   id?: number;
   made_at?: string;
-  quantity?: number;
-  provided?: boolean;
-  customer?: GetApiOrderGet200DataItemCustomer;
   product?: GetApiOrderGet200DataItemProduct;
+  provided?: boolean;
+  quantity?: number;
 };

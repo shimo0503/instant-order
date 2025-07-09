@@ -1,18 +1,22 @@
 'use client'
 
-import { useForm, SubmitHandler } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
 import { Box, Button, ListItem, TextField } from "@mui/material"
+import { AxiosError } from "axios"
+import { useForm, SubmitHandler } from "react-hook-form"
+import z from 'zod'
+
+import Header from "@/components/Header"
 import { usePostApiMenuNew } from "@/generated/backend/menu/menu"
 import { PostApiMenuNewBody } from "@/generated/backend/model"
-import z from 'zod'
-import { zodResolver } from "@hookform/resolvers/zod"
-import Header from "@/components/Header"
-import { AxiosError } from "axios"
+
+
+
 
 // ヘッダー
 const headerData = {
-    title: "メニュー追加",
-    description: "まだ登録されていないメニューを追加します。残数は0で設定されるので、残数登録は残数登録ページで行ってください。"
+    description: "まだ登録されていないメニューを追加します。残数は0で設定されるので、残数登録は残数登録ページで行ってください。",
+    title: "メニュー追加"
 }
 
 // スキーマ
@@ -44,56 +48,56 @@ const Add = () => {
     }
     return (
         <Box>
-            <Header title={headerData.title} description={headerData.description}/>
+            <Header description={headerData.description} title={headerData.title}/>
             <Box
                 component='form'
                 onSubmit={(handleSubmit(handleSubmitPost))}
             >
                 <ListItem
                     sx={{
+                        alignItems: 'flex-start',
                         display: 'flex',
                         flexDirection: 'column',
-                        alignItems: 'flex-start',
                         gap: 1
                     }}
                 >
                     <TextField
                         label='商品名'
                         {...register('name')}
-                        variant='outlined'
-                        placeholder='商品名を入力してください'
                         error={!!errors.name?.message}
                         helperText={errors.name?.message}
+                        placeholder='商品名を入力してください'
                         sx= {{
                             ml: 1,
                             mr: 1
                         }}
+                        variant='outlined'
                     >
                     </TextField>
                     <TextField
                         label='値段'
                         {...register('price', { valueAsNumber: true })}
-                        variant='outlined'
-                        placeholder='値段を入力してください'
                         error={!!errors.price?.message}
                         helperText={errors.price?.message}
+                        placeholder='値段を入力してください'
                         sx= {{
                             ml: 1,
                             mr: 1
                         }}
+                        variant='outlined'
                     >
                     </TextField>
                 </ListItem>
                 <Button
-                    type='submit'
-                    variant="contained"
                     color='primary'
                     sx={{
-                        width: '120px',
-                        height: '50px',
                         fontSize: '20px',
-                        ml: 3
+                        height: '50px',
+                        ml: 3,
+                        width: '120px'
                     }}
+                    type='submit'
+                    variant="contained"
                 >
                     送信
                 </Button>

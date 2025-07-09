@@ -1,19 +1,21 @@
 "use client"
 
-import { AxiosError } from "axios"
-import { usePostApiOrderNew } from "@/generated/backend/menu/menu"
-import { useGetApiProduct } from "@/generated/backend/product/product"
-import { PostApiOrderAddBody } from "@/generated/backend/model"
-import { z } from 'zod'
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm, useFieldArray, Controller, SubmitHandler } from "react-hook-form"
 import { Box, Stack, TextField, MenuItem, Button } from "@mui/material"
+import { AxiosError } from "axios"
+import { useForm, useFieldArray, Controller, SubmitHandler } from "react-hook-form"
+import { z } from 'zod'
+
 import Header from "@/components/Header"
+import { usePostApiOrderNew } from "@/generated/backend/menu/menu"
+import { PostApiOrderAddBody } from "@/generated/backend/model"
+import { useGetApiProduct } from "@/generated/backend/product/product"
+
 
 // ヘッダー
 const headerData = {
-    title: "新規注文",
-    description: "新規のお客さんの注文をします。注文済みのお客さんに対しての追加注文は、追加注文ページからお願いします。"
+    description: "新規のお客さんの注文をします。注文済みのお客さんに対しての追加注文は、追加注文ページからお願いします。",
+    title: "新規注文"
 }
 
 const ItemSchema = z.object({
@@ -21,8 +23,8 @@ const ItemSchema = z.object({
     quantity: z.number().min(1, '注文数は1以上です')
 })
 const Schema = z.object({
-    table_number: z.preprocess((val) => Number(val), z.number().min(1, 'テーブル番号は1以上です。')),
-    data: z.array(ItemSchema).min(1, '商品が1つ以上必要です。')
+    data: z.array(ItemSchema).min(1, '商品が1つ以上必要です。'),
+    table_number: z.preprocess((val) => Number(val), z.number().min(1, 'テーブル番号は1以上です。'))
 })
 
 type params = z.infer<typeof Schema>
@@ -31,11 +33,11 @@ const NewOrder = () => {
     const { data: productdata } = useGetApiProduct()
     const { data: orderResult, mutate, isPending, error } = usePostApiOrderNew()
     const { control, handleSubmit, setValue, watch } = useForm({
-        resolver: zodResolver(Schema),
         defaultValues: {
-            table_number: 1,
-            data: [{ name: '', quantity: 1 }]
-        }
+            data: [{ name: '', quantity: 1 }],
+            table_number: 1
+        },
+        resolver: zodResolver(Schema)
     })
     const { fields, append, remove } = useFieldArray({
         control,
@@ -46,8 +48,8 @@ const NewOrder = () => {
         mutate(
             {
                 data: JSON.stringify({
-                    table_number: formData.table_number,
-                    data: formData.data
+                    data: formData.data,
+                    table_number: formData.table_number
                 })
             },
             {
@@ -60,14 +62,14 @@ const NewOrder = () => {
 
     return(
         <Stack>
-            <Header title={headerData.title} description={headerData.description}/>
+            <Header description={headerData.description} title={headerData.title}/>
             <Box
                 component='form'
                 onSubmit={handleSubmit(handleSubmitPost)}
             >
                 <Controller
-                    name="table_number"
                     control={control}
+                    name="table_number"
                     render={({ field, fieldState }) => {
                         return (
                             <TextField
@@ -84,15 +86,15 @@ const NewOrder = () => {
                 {fields.map((field, index) => {
                     const quantity = watch(`data.${index}.quantity`) || 1
                     return (
-                        <Box key={field.id} display="flex" gap={1} alignItems="center">
+                        <Box alignItems="center" display="flex" gap={1} key={field.id}>
                             <Controller
-                                name={`data.${index}.name`}
                                 control={control}
+                                name={`data.${index}.name`}
                                 render={({ field, fieldState }) => {
                                     return(
                                         <TextField
-                                            select
                                             label="商品名"
+                                            select
                                             {...field}
                                             error={!!fieldState.error}
                                             helperText={fieldState.error?.message}
@@ -109,10 +111,10 @@ const NewOrder = () => {
                             />
 
                             <Controller
-                                name={`data.${index}.quantity`}
                                 control={control}
+                                name={`data.${index}.quantity`}
                                 render={({ field, fieldState }) => (
-                                    <Box display="flex" alignItems="center" gap={1}>
+                                    <Box alignItems="center" display="flex" gap={1}>
                                         <Button
                                             onClick={() =>
                                             setValue(`data.${index}.quantity`, Math.max(1, quantity - 1))
@@ -120,11 +122,11 @@ const NewOrder = () => {
                                         >−</Button>
                                         <TextField
                                             {...field}
-                                            value={quantity}
-                                            inputProps={{ readOnly: true, style: { textAlign: 'center' } }}
                                             error={!!fieldState.error}
                                             helperText={fieldState.error?.message}
+                                            inputProps={{ readOnly: true, style: { textAlign: 'center' } }}
                                             sx={{ width: 50 }}
+                                            value={quantity}
                                         />
                                             <Button
                                             onClick={() =>
@@ -140,16 +142,16 @@ const NewOrder = () => {
                     )
                 })}
                 <Button
-                    variant='outlined'
                     onClick={() => append({name: '', quantity: 1})}
+                    variant='outlined'
                 >
                     商品を追加
                 </Button>
 
                 <Button
-                    variant="contained"
                     color="primary"
                     type="submit"
+                    variant="contained"
                 >
                     注文を送信
                 </Button>

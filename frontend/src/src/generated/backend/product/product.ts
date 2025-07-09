@@ -8,6 +8,19 @@ import {
   useMutation,
   useQuery
 } from '@tanstack/react-query';
+
+import { customInstance } from '../../../mutator/custom-instance';
+
+import type {
+  GetApiProduct200,
+  PostApiProduct200,
+  PostApiProductBody,
+  PostApiProvide201,
+  PostApiProvide400,
+  PostApiProvideBody,
+  PostApiRestBody,
+  RegisterSchema
+} from '.././model';
 import type {
   DataTag,
   DefinedInitialDataOptions,
@@ -23,18 +36,7 @@ import type {
   UseQueryResult
 } from '@tanstack/react-query';
 
-import type {
-  GetApiProduct200,
-  PostApiProduct200,
-  PostApiProductBody,
-  PostApiProvide201,
-  PostApiProvide400,
-  PostApiProvideBody,
-  PostApiRestBody,
-  RegisterSchema
-} from '.././model';
 
-import { customInstance } from '../../../mutator/custom-instance';
 
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
@@ -48,7 +50,7 @@ export const getApiProduct = (
       
       
       return customInstance<GetApiProduct200>(
-      {url: `/api/product`, method: 'GET', signal
+      {method: 'GET', signal, url: `/api/product`
     },
       options);
     }
@@ -74,7 +76,7 @@ const {query: queryOptions, request: requestOptions} = options ?? {};
 
       
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiProduct>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+   return  { queryFn, queryKey, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiProduct>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetApiProductQueryResult = NonNullable<Awaited<ReturnType<typeof getApiProduct>>>
@@ -136,9 +138,9 @@ if(postApiProductBody.provided !== undefined) {
  }
 
       return customInstance<PostApiProduct200>(
-      {url: `/api/product`, method: 'POST',
-      headers: {'Content-Type': 'multipart/form-data', },
-       data: formData, signal
+      {data: formData, headers: {'Content-Type': 'multipart/form-data', },
+      method: 'POST',
+       signal, url: `/api/product`
     },
       options);
     }
@@ -203,9 +205,9 @@ formData.append('name', postApiRestBody.name)
 formData.append('rest', postApiRestBody.rest.toString())
 
       return customInstance<RegisterSchema>(
-      {url: `/api/rest`, method: 'POST',
-      headers: {'Content-Type': 'multipart/form-data', },
-       data: formData, signal
+      {data: formData, headers: {'Content-Type': 'multipart/form-data', },
+      method: 'POST',
+       signal, url: `/api/rest`
     },
       options);
     }
@@ -268,9 +270,9 @@ export const postApiProvide = (
       
       
       return customInstance<PostApiProvide201>(
-      {url: `/api/provide`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: postApiProvideBody, signal
+      {data: postApiProvideBody, headers: {'Content-Type': 'application/json', },
+      method: 'POST',
+      signal, url: `/api/provide`
     },
       options);
     }

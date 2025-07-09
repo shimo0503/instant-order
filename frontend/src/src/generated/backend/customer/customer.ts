@@ -8,6 +8,15 @@ import {
   useMutation,
   useQuery
 } from '@tanstack/react-query';
+
+import { customInstance } from '../../../mutator/custom-instance';
+
+import type {
+  GetApiCustomer200,
+  GetApiSales200,
+  PostApiPayBody,
+  RegisterSchema
+} from '.././model';
 import type {
   DataTag,
   DefinedInitialDataOptions,
@@ -23,14 +32,7 @@ import type {
   UseQueryResult
 } from '@tanstack/react-query';
 
-import type {
-  GetApiCustomer200,
-  GetApiSales200,
-  PostApiPayBody,
-  RegisterSchema
-} from '.././model';
 
-import { customInstance } from '../../../mutator/custom-instance';
 
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
@@ -49,9 +51,9 @@ export const postApiPay = (
 formData.append('table_number', postApiPayBody.table_number.toString())
 
       return customInstance<RegisterSchema>(
-      {url: `/api/pay`, method: 'POST',
-      headers: {'Content-Type': 'multipart/form-data', },
-       data: formData, signal
+      {data: formData, headers: {'Content-Type': 'multipart/form-data', },
+      method: 'POST',
+       signal, url: `/api/pay`
     },
       options);
     }
@@ -113,7 +115,7 @@ export const getApiCustomer = (
       
       
       return customInstance<GetApiCustomer200>(
-      {url: `/api/customer`, method: 'GET', signal
+      {method: 'GET', signal, url: `/api/customer`
     },
       options);
     }
@@ -139,7 +141,7 @@ const {query: queryOptions, request: requestOptions} = options ?? {};
 
       
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiCustomer>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+   return  { queryFn, queryKey, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiCustomer>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetApiCustomerQueryResult = NonNullable<Awaited<ReturnType<typeof getApiCustomer>>>
@@ -201,7 +203,7 @@ export const getApiSales = (
       
       
       return customInstance<GetApiSales200>(
-      {url: `/api/sales`, method: 'GET', signal
+      {method: 'GET', signal, url: `/api/sales`
     },
       options);
     }
@@ -227,7 +229,7 @@ const {query: queryOptions, request: requestOptions} = options ?? {};
 
       
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiSales>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+   return  { queryFn, queryKey, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiSales>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetApiSalesQueryResult = NonNullable<Awaited<ReturnType<typeof getApiSales>>>

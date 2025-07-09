@@ -7,6 +7,6 @@
 import type { GetApiCustomer200DataItem } from './getApiCustomer200DataItem';
 
 export type GetApiCustomer200 = {
-  status?: string;
   data?: GetApiCustomer200DataItem[];
+  status?: string;
 };

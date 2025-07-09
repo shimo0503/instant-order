@@ -7,6 +7,6 @@
 import type { GetApiOrderGet200DataItem } from './getApiOrderGet200DataItem';
 
 export type GetApiOrderGet200 = {
-  status?: string;
   data?: GetApiOrderGet200DataItem[];
+  status?: string;
 };

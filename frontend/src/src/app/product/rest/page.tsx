@@ -1,16 +1,17 @@
 'use client'
-import { useForm, SubmitHandler } from "react-hook-form"
-import { Box, Button, ListItem, Stack, TextField } from "@mui/material"
-import { useGetApiProduct, usePostApiRest } from "@/generated/backend/product/product"
-import { PostApiRestBody } from "@/generated/backend/model"
-import z from 'zod'
 import { zodResolver } from "@hookform/resolvers/zod"
+import { Box, Button, ListItem, Stack, TextField } from "@mui/material"
+import { useForm, SubmitHandler } from "react-hook-form"
+import z from 'zod'
+
 import Header from "@/components/Header"
+import { PostApiRestBody } from "@/generated/backend/model"
+import { useGetApiProduct, usePostApiRest } from "@/generated/backend/product/product"
 
 //ヘッダー情報
 const headerData = {
-    title: "残数登録",
-    description: "商品が今いくつ残っているかを登録できます。"
+    description: "商品が今いくつ残っているかを登録できます。",
+    title: "残数登録"
 }
 
 // スキーマ
@@ -44,16 +45,16 @@ const RestRegister = () => {
     }
     return (
         <Stack>
-            <Header title={headerData.title} description={headerData.description}/>
+            <Header description={headerData.description} title={headerData.title}/>
             <Box
                 component='form'
                 onSubmit={(handleSubmit(handleSubmitPost))}
             >
                 <ListItem
                     sx={{
+                        alignItems: 'flex-start',
                         display: 'flex',
                         flexDirection: 'column',
-                        alignItems: 'flex-start',
                         gap: 1
                     }}
                 >
@@ -61,12 +62,12 @@ const RestRegister = () => {
                         component='select'
                         {...register('name')}
                         sx={{
-                            width: '220px',
-                            height: '60px',
-                            fontSize: '20px',
                             borderRadius: '4px',
+                            fontSize: '20px',
+                            height: '60px',
                             ml: 1,
                             mr: 1,
+                            width: '220px',
                         }}
                     >
                     {data?.data?.map((product, index) => {
@@ -77,28 +78,28 @@ const RestRegister = () => {
                     <TextField
                         label='残数'
                         {...register('rest', { valueAsNumber: true })}
-                        variant='outlined'
-                        placeholder='残数を入力してください'
                         error={!!errors.rest?.message}
                         helperText={errors.rest?.message}
+                        placeholder='残数を入力してください'
                         sx= {{
-                            width: '220px',
                             ml: 1,
-                            mr: 1
+                            mr: 1,
+                            width: '220px'
                         }}
+                        variant='outlined'
                     >
                     </TextField>
                 </ListItem>
                 <Button
-                    type='submit'
-                    variant="contained"
                     color='primary'
                     sx={{
-                        width: '120px',
-                        height: '50px',
                         fontSize: '20px',
-                        ml: 3
+                        height: '50px',
+                        ml: 3,
+                        width: '120px'
                     }}
+                    type='submit'
+                    variant="contained"
                 >
                     送信
                 </Button>

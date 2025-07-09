@@ -2,9 +2,9 @@ import { Card, CardHeader } from "@mui/material"
 import Link from "next/link"
 
 type LinkCardProps = {
-    title: string,
     index: number,
-    link: string
+    link: string,
+    title: string
 }
 const LinkCard = (props: LinkCardProps) => {
     const title = props.title
@@ -14,17 +14,17 @@ const LinkCard = (props: LinkCardProps) => {
         <Link href={link}>
             <Card
             key={index}
-            variant="outlined"
             sx={
                 {
-                    mt: '1',
+                    backgroundColor: '#b9f8eb',
                     mb: '1',
-                    textAlign: 'center',
-                    backgroundColor: '#b9f8eb'
+                    mt: '1',
+                    textAlign: 'center'
                 }
             }
+            variant="outlined"
             >
-                <CardHeader title={title} key={index}>
+                <CardHeader key={index} title={title}>
                 </CardHeader>
             </Card>
         </Link>

@@ -7,6 +7,6 @@
 import type { PostApiOrderAddBodyDataItem } from './postApiOrderAddBodyDataItem';
 
 export type PostApiOrderAddBody = {
-  table_number: number;
   data: PostApiOrderAddBodyDataItem[];
+  table_number: number;
 };

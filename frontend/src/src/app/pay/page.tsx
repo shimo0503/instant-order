@@ -1,13 +1,15 @@
 'use client'
 
-import { useGetApiCustomer } from "@/generated/backend/customer/customer";
-import Header from "@/components/Header";
 import { Box } from "@mui/material";
+
+import Header from "@/components/Header";
+import { useGetApiCustomer } from "@/generated/backend/customer/customer";
+
 import Customer from "./_components/Customer";
 
 const headerData = {
-    title: "会計",
-    description: "会計が終わった後、その卓のテーブル番号を押すと、その番号に関連するデータが削除され、その卓を次のお客さんが使えるようにします。売上データのみ保存されます。"
+    description: "会計が終わった後、その卓のテーブル番号を押すと、その番号に関連するデータが削除され、その卓を次のお客さんが使えるようにします。売上データのみ保存されます。",
+    title: "会計"
 }
 
 const PayPage = () => {
@@ -22,7 +24,7 @@ const PayPage = () => {
     else {
         return (
             <Box>
-                <Header title={headerData.title} description={headerData.description}/>
+                <Header description={headerData.description} title={headerData.title}/>
                 <Box
                     sx={{
                         display: "flex"
@@ -32,8 +34,8 @@ const PayPage = () => {
                         return (
                             <Customer
                                 key={index}
-                                table_number={data.table_number}
                                 price={data.price}
+                                table_number={data.table_number}
                             />
                         )
                     })}

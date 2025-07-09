@@ -8,8 +8,8 @@
 export type GetApiOrderGet200DataItemCustomer = {
   id?: number;
   made_at?: string;
-  table_number?: number;
   paycheck?: boolean;
   price?: number;
   products?: number[];
+  table_number?: number;
 };

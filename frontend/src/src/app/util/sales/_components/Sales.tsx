@@ -1,8 +1,9 @@
 "use client"
 
-import { useGetApiSales } from "@/generated/backend/customer/customer";
 import { Box } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
+
+import { useGetApiSales } from "@/generated/backend/customer/customer";
 
 const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID' },
@@ -21,9 +22,9 @@ const Sales = () => {
     else if (data) {
         return (
             <DataGrid
-                rows={data?.data}
                 columns={columns}
                 disableColumnMenu
+                rows={data?.data}
                 sx={{
                     maxWidth: '1000px'
                 }}

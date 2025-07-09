@@ -6,8 +6,8 @@
  */
 
 export type GetApiProduct200DataItem = {
-  name?: string;
   code?: string;
+  name?: string;
   price?: number;
   rest?: number;
 };

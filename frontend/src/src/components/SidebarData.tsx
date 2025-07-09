@@ -1,15 +1,15 @@
 const SidebarData = [
-    { title: "ホーム", link: "/", icon: "home" },
-    { title: "新規注文", link: "/order/new", icon: "meal"},
-    { title: "追加注文", link: "/order/add", icon: "meal"},
-    { title: "注文済み商品", link: "/product/ordered", icon: "prod"},
-    { title: "提供済み商品", link: "/product/provided", icon: "prod"},
-    { title: "会計", link: "/pay", icon: "/util/pay"},
-    { title: "メニュー一覧", link: '/product/menu', icon: "meal" },
-    { title: "メニュー追加", link: "/product/add", icon: "meal"},
-    { title: "残数登録", link: "/product/rest", icon: "rest"},
-    { title: "売上", link: "/util/sales", icon: "sale"},
-    { title: "その他", link: "/util/other", icon: "else"}
+    { icon: "home", link: "/", title: "ホーム" },
+    { icon: "meal", link: "/order/new", title: "新規注文"},
+    { icon: "meal", link: "/order/add", title: "追加注文"},
+    { icon: "prod", link: "/product/ordered", title: "注文済み商品"},
+    { icon: "prod", link: "/product/provided", title: "提供済み商品"},
+    { icon: "/util/pay", link: "/pay", title: "会計"},
+    { icon: "meal", link: '/product/menu', title: "メニュー一覧" },
+    { icon: "meal", link: "/product/add", title: "メニュー追加"},
+    { icon: "rest", link: "/product/rest", title: "残数登録"},
+    { icon: "sale", link: "/util/sales", title: "売上"},
+    { icon: "else", link: "/util/other", title: "その他"}
 ]
 
 export default SidebarData

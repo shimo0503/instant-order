@@ -1,13 +1,15 @@
 "use client"
 
 import { Box } from "@mui/material"
+
 import Header from "@/components/Header"
 import { useGetApiOrderGet } from "@/generated/backend/menu/menu"
+
 import Product from "../_components/Product"
 
 const headerData = {
-    title: "提供済み商品",
-    description: "注文済みでかつ提供済み商品をテーブル番号と一緒に表示します。提供ボタンを押すと未提供に戻せます。"
+    description: "注文済みでかつ提供済み商品をテーブル番号と一緒に表示します。提供ボタンを押すと未提供に戻せます。",
+    title: "提供済み商品"
 }
 
 const OrderedProduct = () => {
@@ -22,7 +24,7 @@ const OrderedProduct = () => {
         console.log(data)
         return (
             <Box>
-                <Header title={headerData.title} description={headerData.description}/>
+                <Header description={headerData.description} title={headerData.title}/>
                 <Box
                     sx={{
                         display: "flex"
@@ -33,9 +35,9 @@ const OrderedProduct = () => {
                             return (
                                 <Product
                                     key={index}
-                                    table_number={data.customer?.table_number}
                                     name={data.product?.name}
                                     quantity={data.quantity}
+                                    table_number={data.customer?.table_number}
                                 />
                             )
                         }

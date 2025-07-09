@@ -2,8 +2,8 @@ import { Box, Paper } from "@mui/material"
 
 type menuProps = {
     name: string | undefined,
-    rest: number | undefined,
-    price: number | undefined
+    price: number | undefined,
+    rest: number | undefined
 }
 
 const Menu = (props: menuProps) => {
@@ -15,13 +15,13 @@ const Menu = (props: menuProps) => {
             <Paper
                 elevation={5}
                 sx={{
-                    p: 2,
-                    m: 1,
-                    width: 260,
                     borderRadius: 2,
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'space-between',
+                    m: 1,
+                    p: 2,
+                    width: 260,
                 }}
             >
                 <Box>{name}</Box>

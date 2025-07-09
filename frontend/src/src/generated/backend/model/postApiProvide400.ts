@@ -6,6 +6,6 @@
  */
 
 export type PostApiProvide400 = {
-  status?: string;
   data?: string;
+  status?: string;
 };

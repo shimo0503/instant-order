@@ -1,9 +1,10 @@
 import {Box, Button, Paper } from "@mui/material"
+
 import { usePostApiPay } from "@/generated/backend/customer/customer"
 
 type ProductProps = {
-    table_number: number | undefined,
-    price: number | undefined
+    price: number | undefined,
+    table_number: number | undefined
 }
 
 const Customer = (props: ProductProps) => {
@@ -36,24 +37,24 @@ const Customer = (props: ProductProps) => {
             <Paper
                 elevation={5}
                 sx={{
-                    p: 2,
-                    m: 1,
-                    width: 260,
                     borderRadius: 2,
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'space-between',
+                    m: 1,
+                    p: 2,
+                    width: 260,
                 }}
             >
                 <Box>テーブル番号: {table_number}</Box>
                 <Box>{price}円</Box>
                 <Button
-                    variant="contained"
                     color="success"
+                    onClick={SubmitHandler}
                     sx={{
                         mt: 2
                     }}
-                    onClick={SubmitHandler}
+                    variant="contained"
                 >
                     会計
                 </Button>

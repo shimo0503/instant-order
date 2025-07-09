@@ -7,6 +7,6 @@
 import type { PostApiProduct200DataItem } from './postApiProduct200DataItem';
 
 export type PostApiProduct200 = {
-  status?: string;
   data?: PostApiProduct200DataItem[];
+  status?: string;
 };

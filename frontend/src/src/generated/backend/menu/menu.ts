@@ -8,6 +8,15 @@ import {
   useMutation,
   useQuery
 } from '@tanstack/react-query';
+
+import { customInstance } from '../../../mutator/custom-instance';
+
+import type {
+  GetApiOrderGet200,
+  PostApiMenuNewBody,
+  PostApiOrderAddBody,
+  RegisterSchema
+} from '.././model';
 import type {
   DataTag,
   DefinedInitialDataOptions,
@@ -23,14 +32,7 @@ import type {
   UseQueryResult
 } from '@tanstack/react-query';
 
-import type {
-  GetApiOrderGet200,
-  PostApiMenuNewBody,
-  PostApiOrderAddBody,
-  RegisterSchema
-} from '.././model';
 
-import { customInstance } from '../../../mutator/custom-instance';
 
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
@@ -60,9 +62,9 @@ if(postApiMenuNewBody.rest !== undefined) {
  }
 
       return customInstance<RegisterSchema>(
-      {url: `/api/Menu/new`, method: 'POST',
-      headers: {'Content-Type': 'multipart/form-data', },
-       data: formData, signal
+      {data: formData, headers: {'Content-Type': 'multipart/form-data', },
+      method: 'POST',
+       signal, url: `/api/Menu/new`
     },
       options);
     }
@@ -124,9 +126,9 @@ export const postApiOrderNew = (
       
       
       return customInstance<RegisterSchema>(
-      {url: `/api/order/new`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: postApiOrderNewBody, signal
+      {data: postApiOrderNewBody, headers: {'Content-Type': 'application/json', },
+      method: 'POST',
+      signal, url: `/api/order/new`
     },
       options);
     }
@@ -188,9 +190,9 @@ export const postApiOrderAdd = (
       
       
       return customInstance<RegisterSchema>(
-      {url: `/api/order/add`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: postApiOrderAddBody, signal
+      {data: postApiOrderAddBody, headers: {'Content-Type': 'application/json', },
+      method: 'POST',
+      signal, url: `/api/order/add`
     },
       options);
     }
@@ -253,7 +255,7 @@ export const getApiOrderGet = (
       
       
       return customInstance<GetApiOrderGet200>(
-      {url: `/api/order/get`, method: 'GET', signal
+      {method: 'GET', signal, url: `/api/order/get`
     },
       options);
     }
@@ -279,7 +281,7 @@ const {query: queryOptions, request: requestOptions} = options ?? {};
 
       
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiOrderGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+   return  { queryFn, queryKey, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiOrderGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetApiOrderGetQueryResult = NonNullable<Awaited<ReturnType<typeof getApiOrderGet>>>

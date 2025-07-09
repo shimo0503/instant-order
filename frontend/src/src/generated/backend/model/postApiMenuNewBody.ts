@@ -6,8 +6,8 @@
  */
 
 export type PostApiMenuNewBody = {
-  name?: string;
   code?: string;
+  name?: string;
   price?: number;
   rest?: number;
 };

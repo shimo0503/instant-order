@@ -7,6 +7,6 @@
 import type { Sale } from './sale';
 
 export type GetApiSales200 = {
-  status?: string;
   data?: Sale[];
+  status?: string;
 };

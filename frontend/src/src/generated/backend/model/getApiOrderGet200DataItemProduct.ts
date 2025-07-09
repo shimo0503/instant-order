@@ -6,9 +6,9 @@
  */
 
 export type GetApiOrderGet200DataItemProduct = {
+  code?: string;
   id?: number;
   name?: string;
-  code?: string;
   price?: number;
   rest?: number;
 };

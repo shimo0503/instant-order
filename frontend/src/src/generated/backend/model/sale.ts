@@ -6,7 +6,7 @@
  */
 
 export interface Sale {
-  id?: number;
   date?: string;
+  id?: number;
   price?: number;
 }

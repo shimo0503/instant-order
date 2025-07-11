@@ -1,252 +1,209 @@
 {
-	"info": {
-		"_postman_id": "26cc28b5-bf31-4a7f-abfc-bb3aa57c7ebc",
-		"name": "New Collection",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "42120591"
-	},
-	"item": [
-		{
-			"name": "all products",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:8000/api/product",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8000",
-					"path": [
-						"api",
-						"product"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "restRegister",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "formdata",
-					"formdata": [
-						{
-							"key": "name",
-							"value": "ケーキ2",
-							"type": "text"
-						},
-						{
-							"key": "rest",
-							"value": "40",
-							"type": "text"
-						}
-					]
-				},
-				"url": {
-					"raw": "http://localhost:8000/api/rest",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8000",
-					"path": [
-						"api",
-						"rest"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "newMenu",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "formdata",
-					"formdata": [
-						{
-							"key": "name",
-							"value": "test33",
-							"type": "text"
-						},
-						{
-							"key": "code",
-							"value": " ",
-							"type": "text"
-						},
-						{
-							"key": "price",
-							"value": "400",
-							"type": "text"
-						},
-						{
-							"key": "rest",
-							"value": "0",
-							"type": "text",
-							"disabled": true
-						}
-					]
-				},
-				"url": {
-					"raw": "http://localhost:8000/api/Menu/new",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8000",
-					"path": [
-						"api",
-						"Menu",
-						"new"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "NewOrder",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "y",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8000/api/order/new",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8000",
-					"path": [
-						"api",
-						"order",
-						"new"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "provided products",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "formdata",
-					"formdata": [
-						{
-							"key": "provided",
-							"value": "false",
-							"type": "text"
-						}
-					]
-				},
-				"url": {
-					"raw": "http://localhost:8000/api/product",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8000",
-					"path": [
-						"api",
-						"product"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "all customers",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:8000/api/customer",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8000",
-					"path": [
-						"api",
-						"customer"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "AddOrder",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"table_number\": 1,\r\n    \"data\": [\r\n        {\r\n            \"name\": \"ケーキ\",\r\n            \"quantity\": 3\r\n        },\r\n        {\r\n            \"name\": \"ケーキ2\",\r\n            \"quantity\": 4\r\n        }\r\n    ]\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8000/api/order/add",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8000",
-					"path": [
-						"api",
-						"order",
-						"add"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "pay",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "formdata",
-					"formdata": [
-						{
-							"key": "table_number",
-							"value": "2",
-							"type": "text"
-						}
-					]
-				},
-				"url": {
-					"raw": "http://localhost:8000/api/pay",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8000",
-					"path": [
-						"api",
-						"pay"
-					]
-				}
-			},
-			"response": []
-		}
-	]
+  "info": {
+    "_postman_id": "26cc28b5-bf31-4a7f-abfc-bb3aa57c7ebc",
+    "name": "New Collection",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "42120591"
+  },
+  "item": [
+    {
+      "name": "all products",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8000/api/product",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8000",
+          "path": ["api", "product"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "restRegister",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "name",
+              "value": "ケーキ2",
+              "type": "text"
+            },
+            {
+              "key": "rest",
+              "value": "40",
+              "type": "text"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:8000/api/rest",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8000",
+          "path": ["api", "rest"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "newMenu",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "name",
+              "value": "test33",
+              "type": "text"
+            },
+            {
+              "key": "code",
+              "value": " ",
+              "type": "text"
+            },
+            {
+              "key": "price",
+              "value": "400",
+              "type": "text"
+            },
+            {
+              "key": "rest",
+              "value": "0",
+              "type": "text",
+              "disabled": true
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:8000/api/Menu/new",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8000",
+          "path": ["api", "Menu", "new"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "NewOrder",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "y",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8000/api/order/new",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8000",
+          "path": ["api", "order", "new"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "provided products",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "provided",
+              "value": "false",
+              "type": "text"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:8000/api/product",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8000",
+          "path": ["api", "product"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "all customers",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8000/api/customer",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8000",
+          "path": ["api", "customer"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "AddOrder",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"table_number\": 1,\r\n    \"data\": [\r\n        {\r\n            \"name\": \"ケーキ\",\r\n            \"quantity\": 3\r\n        },\r\n        {\r\n            \"name\": \"ケーキ2\",\r\n            \"quantity\": 4\r\n        }\r\n    ]\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8000/api/order/add",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8000",
+          "path": ["api", "order", "add"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "pay",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "table_number",
+              "value": "2",
+              "type": "text"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:8000/api/pay",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8000",
+          "path": ["api", "pay"]
+        }
+      },
+      "response": []
+    }
+  ]
 }

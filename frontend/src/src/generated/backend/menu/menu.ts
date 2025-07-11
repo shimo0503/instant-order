@@ -4,19 +4,6 @@
  * instant order backend API
  * this is API design
  */
-import {
-  useMutation,
-  useQuery
-} from '@tanstack/react-query';
-
-import { customInstance } from '../../../mutator/custom-instance';
-
-import type {
-  GetApiOrderGet200,
-  PostApiMenuNewBody,
-  PostApiOrderAddBody,
-  RegisterSchema
-} from '.././model';
 import type {
   DataTag,
   DefinedInitialDataOptions,
@@ -29,306 +16,429 @@ import type {
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
-  UseQueryResult
+  UseQueryResult,
 } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 
-
-
+import { customInstance } from '../../../mutator/custom-instance';
+import type {
+  GetApiOrderGet200,
+  PostApiMenuNewBody,
+  PostApiOrderAddBody,
+  RegisterSchema,
+} from '.././model';
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
-
-
 
 /**
  * @summary Create a new menu item
  */
 export const postApiMenuNew = (
-    postApiMenuNewBody: PostApiMenuNewBody,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  postApiMenuNewBody: PostApiMenuNewBody,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      const formData = new FormData();
-if(postApiMenuNewBody.name !== undefined) {
- formData.append('name', postApiMenuNewBody.name)
- }
-if(postApiMenuNewBody.code !== undefined) {
- formData.append('code', postApiMenuNewBody.code)
- }
-if(postApiMenuNewBody.price !== undefined) {
- formData.append('price', postApiMenuNewBody.price.toString())
- }
-if(postApiMenuNewBody.rest !== undefined) {
- formData.append('rest', postApiMenuNewBody.rest.toString())
- }
+  const formData = new FormData();
+  if (postApiMenuNewBody.name !== undefined) {
+    formData.append('name', postApiMenuNewBody.name);
+  }
+  if (postApiMenuNewBody.code !== undefined) {
+    formData.append('code', postApiMenuNewBody.code);
+  }
+  if (postApiMenuNewBody.price !== undefined) {
+    formData.append('price', postApiMenuNewBody.price.toString());
+  }
+  if (postApiMenuNewBody.rest !== undefined) {
+    formData.append('rest', postApiMenuNewBody.rest.toString());
+  }
 
-      return customInstance<RegisterSchema>(
-      {data: formData, headers: {'Content-Type': 'multipart/form-data', },
+  return customInstance<RegisterSchema>(
+    {
+      data: formData,
+      headers: { 'Content-Type': 'multipart/form-data' },
       method: 'POST',
-       signal, url: `/api/Menu/new`
+      signal,
+      url: `/api/Menu/new`,
     },
-      options);
-    }
-  
+    options,
+  );
+};
 
+export const getPostApiMenuNewMutationOptions = <
+  TError = RegisterSchema,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postApiMenuNew>>,
+    TError,
+    { data: PostApiMenuNewBody },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof postApiMenuNew>>,
+  TError,
+  { data: PostApiMenuNewBody },
+  TContext
+> => {
+  const mutationKey = ['postApiMenuNew'];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      'mutationKey' in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-export const getPostApiMenuNewMutationOptions = <TError = RegisterSchema,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiMenuNew>>, TError,{data: PostApiMenuNewBody}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof postApiMenuNew>>, TError,{data: PostApiMenuNewBody}, TContext> => {
-    
-const mutationKey = ['postApiMenuNew'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof postApiMenuNew>>,
+    { data: PostApiMenuNewBody }
+  > = (props) => {
+    const { data } = props ?? {};
 
-      
+    return postApiMenuNew(data, requestOptions);
+  };
 
+  return { mutationFn, ...mutationOptions };
+};
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiMenuNew>>, {data: PostApiMenuNewBody}> = (props) => {
-          const {data} = props ?? {};
+export type PostApiMenuNewMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postApiMenuNew>>
+>;
+export type PostApiMenuNewMutationBody = PostApiMenuNewBody;
+export type PostApiMenuNewMutationError = RegisterSchema;
 
-          return  postApiMenuNew(data,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type PostApiMenuNewMutationResult = NonNullable<Awaited<ReturnType<typeof postApiMenuNew>>>
-    export type PostApiMenuNewMutationBody = PostApiMenuNewBody
-    export type PostApiMenuNewMutationError = RegisterSchema
-
-    /**
+/**
  * @summary Create a new menu item
  */
-export const usePostApiMenuNew = <TError = RegisterSchema,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiMenuNew>>, TError,{data: PostApiMenuNewBody}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof postApiMenuNew>>,
-        TError,
-        {data: PostApiMenuNewBody},
-        TContext
-      > => {
+export const usePostApiMenuNew = <TError = RegisterSchema, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof postApiMenuNew>>,
+      TError,
+      { data: PostApiMenuNewBody },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof postApiMenuNew>>,
+  TError,
+  { data: PostApiMenuNewBody },
+  TContext
+> => {
+  const mutationOptions = getPostApiMenuNewMutationOptions(options);
 
-      const mutationOptions = getPostApiMenuNewMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    /**
+  return useMutation(mutationOptions, queryClient);
+};
+/**
  * @summary Create new order (raw input, unclear format)
  */
 export const postApiOrderNew = (
-    postApiOrderNewBody: string,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  postApiOrderNewBody: string,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<RegisterSchema>(
-      {data: postApiOrderNewBody, headers: {'Content-Type': 'application/json', },
+  return customInstance<RegisterSchema>(
+    {
+      data: postApiOrderNewBody,
+      headers: { 'Content-Type': 'application/json' },
       method: 'POST',
-      signal, url: `/api/order/new`
+      signal,
+      url: `/api/order/new`,
     },
-      options);
-    }
-  
+    options,
+  );
+};
 
+export const getPostApiOrderNewMutationOptions = <
+  TError = RegisterSchema,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postApiOrderNew>>,
+    TError,
+    { data: string },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof postApiOrderNew>>,
+  TError,
+  { data: string },
+  TContext
+> => {
+  const mutationKey = ['postApiOrderNew'];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      'mutationKey' in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-export const getPostApiOrderNewMutationOptions = <TError = RegisterSchema,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiOrderNew>>, TError,{data: string}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof postApiOrderNew>>, TError,{data: string}, TContext> => {
-    
-const mutationKey = ['postApiOrderNew'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof postApiOrderNew>>,
+    { data: string }
+  > = (props) => {
+    const { data } = props ?? {};
 
-      
+    return postApiOrderNew(data, requestOptions);
+  };
 
+  return { mutationFn, ...mutationOptions };
+};
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiOrderNew>>, {data: string}> = (props) => {
-          const {data} = props ?? {};
+export type PostApiOrderNewMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postApiOrderNew>>
+>;
+export type PostApiOrderNewMutationBody = string;
+export type PostApiOrderNewMutationError = RegisterSchema;
 
-          return  postApiOrderNew(data,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type PostApiOrderNewMutationResult = NonNullable<Awaited<ReturnType<typeof postApiOrderNew>>>
-    export type PostApiOrderNewMutationBody = string
-    export type PostApiOrderNewMutationError = RegisterSchema
-
-    /**
+/**
  * @summary Create new order (raw input, unclear format)
  */
-export const usePostApiOrderNew = <TError = RegisterSchema,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiOrderNew>>, TError,{data: string}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof postApiOrderNew>>,
-        TError,
-        {data: string},
-        TContext
-      > => {
+export const usePostApiOrderNew = <TError = RegisterSchema, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof postApiOrderNew>>,
+      TError,
+      { data: string },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof postApiOrderNew>>,
+  TError,
+  { data: string },
+  TContext
+> => {
+  const mutationOptions = getPostApiOrderNewMutationOptions(options);
 
-      const mutationOptions = getPostApiOrderNewMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    /**
+  return useMutation(mutationOptions, queryClient);
+};
+/**
  * @summary Add detailed order
  */
 export const postApiOrderAdd = (
-    postApiOrderAddBody: PostApiOrderAddBody,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  postApiOrderAddBody: PostApiOrderAddBody,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<RegisterSchema>(
-      {data: postApiOrderAddBody, headers: {'Content-Type': 'application/json', },
+  return customInstance<RegisterSchema>(
+    {
+      data: postApiOrderAddBody,
+      headers: { 'Content-Type': 'application/json' },
       method: 'POST',
-      signal, url: `/api/order/add`
+      signal,
+      url: `/api/order/add`,
     },
-      options);
-    }
-  
+    options,
+  );
+};
 
+export const getPostApiOrderAddMutationOptions = <
+  TError = RegisterSchema,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postApiOrderAdd>>,
+    TError,
+    { data: PostApiOrderAddBody },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof postApiOrderAdd>>,
+  TError,
+  { data: PostApiOrderAddBody },
+  TContext
+> => {
+  const mutationKey = ['postApiOrderAdd'];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      'mutationKey' in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-export const getPostApiOrderAddMutationOptions = <TError = RegisterSchema,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiOrderAdd>>, TError,{data: PostApiOrderAddBody}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof postApiOrderAdd>>, TError,{data: PostApiOrderAddBody}, TContext> => {
-    
-const mutationKey = ['postApiOrderAdd'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof postApiOrderAdd>>,
+    { data: PostApiOrderAddBody }
+  > = (props) => {
+    const { data } = props ?? {};
 
-      
+    return postApiOrderAdd(data, requestOptions);
+  };
 
+  return { mutationFn, ...mutationOptions };
+};
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiOrderAdd>>, {data: PostApiOrderAddBody}> = (props) => {
-          const {data} = props ?? {};
+export type PostApiOrderAddMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postApiOrderAdd>>
+>;
+export type PostApiOrderAddMutationBody = PostApiOrderAddBody;
+export type PostApiOrderAddMutationError = RegisterSchema;
 
-          return  postApiOrderAdd(data,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type PostApiOrderAddMutationResult = NonNullable<Awaited<ReturnType<typeof postApiOrderAdd>>>
-    export type PostApiOrderAddMutationBody = PostApiOrderAddBody
-    export type PostApiOrderAddMutationError = RegisterSchema
-
-    /**
+/**
  * @summary Add detailed order
  */
-export const usePostApiOrderAdd = <TError = RegisterSchema,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiOrderAdd>>, TError,{data: PostApiOrderAddBody}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof postApiOrderAdd>>,
-        TError,
-        {data: PostApiOrderAddBody},
-        TContext
-      > => {
+export const usePostApiOrderAdd = <TError = RegisterSchema, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof postApiOrderAdd>>,
+      TError,
+      { data: PostApiOrderAddBody },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof postApiOrderAdd>>,
+  TError,
+  { data: PostApiOrderAddBody },
+  TContext
+> => {
+  const mutationOptions = getPostApiOrderAddMutationOptions(options);
 
-      const mutationOptions = getPostApiOrderAddMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    /**
+  return useMutation(mutationOptions, queryClient);
+};
+/**
  * Returns a list of all customer orders with nested customer and product details.
  * @summary Get all customer product orders
  */
 export const getApiOrderGet = (
-    
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<GetApiOrderGet200>(
-      {method: 'GET', signal, url: `/api/order/get`
-    },
-      options);
-    }
-  
+  return customInstance<GetApiOrderGet200>(
+    { method: 'GET', signal, url: `/api/order/get` },
+    options,
+  );
+};
 
 export const getGetApiOrderGetQueryKey = () => {
-    return [`/api/order/get`] as const;
-    }
+  return [`/api/order/get`] as const;
+};
 
-    
-export const getGetApiOrderGetQueryOptions = <TData = Awaited<ReturnType<typeof getApiOrderGet>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiOrderGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
-) => {
+export const getGetApiOrderGetQueryOptions = <
+  TData = Awaited<ReturnType<typeof getApiOrderGet>>,
+  TError = unknown,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<Awaited<ReturnType<typeof getApiOrderGet>>, TError, TData>
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-const {query: queryOptions, request: requestOptions} = options ?? {};
+  const queryKey = queryOptions?.queryKey ?? getGetApiOrderGetQueryKey();
 
-  const queryKey =  queryOptions?.queryKey ?? getGetApiOrderGetQueryKey();
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiOrderGet>>> = ({
+    signal,
+  }) => getApiOrderGet(requestOptions, signal);
 
-  
+  return { queryFn, queryKey, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getApiOrderGet>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiOrderGet>>> = ({ signal }) => getApiOrderGet(requestOptions, signal);
+export type GetApiOrderGetQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getApiOrderGet>>
+>;
+export type GetApiOrderGetQueryError = unknown;
 
-      
-
-      
-
-   return  { queryFn, queryKey, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiOrderGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
-}
-
-export type GetApiOrderGetQueryResult = NonNullable<Awaited<ReturnType<typeof getApiOrderGet>>>
-export type GetApiOrderGetQueryError = unknown
-
-
-export function useGetApiOrderGet<TData = Awaited<ReturnType<typeof getApiOrderGet>>, TError = unknown>(
-  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiOrderGet>>, TError, TData>> & Pick<
+export function useGetApiOrderGet<
+  TData = Awaited<ReturnType<typeof getApiOrderGet>>,
+  TError = unknown,
+>(
+  options: {
+    query: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof getApiOrderGet>>, TError, TData>
+    > &
+      Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getApiOrderGet>>,
           TError,
           Awaited<ReturnType<typeof getApiOrderGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetApiOrderGet<TData = Awaited<ReturnType<typeof getApiOrderGet>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiOrderGet>>, TError, TData>> & Pick<
+        >,
+        'initialData'
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetApiOrderGet<
+  TData = Awaited<ReturnType<typeof getApiOrderGet>>,
+  TError = unknown,
+>(
+  options?: {
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof getApiOrderGet>>, TError, TData>
+    > &
+      Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getApiOrderGet>>,
           TError,
           Awaited<ReturnType<typeof getApiOrderGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetApiOrderGet<TData = Awaited<ReturnType<typeof getApiOrderGet>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiOrderGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+        >,
+        'initialData'
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetApiOrderGet<
+  TData = Awaited<ReturnType<typeof getApiOrderGet>>,
+  TError = unknown,
+>(
+  options?: {
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof getApiOrderGet>>, TError, TData>
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
 /**
  * @summary Get all customer product orders
  */
 
-export function useGetApiOrderGet<TData = Awaited<ReturnType<typeof getApiOrderGet>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiOrderGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient 
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+export function useGetApiOrderGet<
+  TData = Awaited<ReturnType<typeof getApiOrderGet>>,
+  TError = unknown,
+>(
+  options?: {
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof getApiOrderGet>>, TError, TData>
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetApiOrderGetQueryOptions(options);
 
-  const queryOptions = getGetApiOrderGetQueryOptions(options)
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-
-  query.queryKey = queryOptions.queryKey ;
+  query.queryKey = queryOptions.queryKey;
 
   return query;
 }
-
-
-

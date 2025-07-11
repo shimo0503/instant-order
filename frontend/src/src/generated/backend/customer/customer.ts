@@ -4,19 +4,6 @@
  * instant order backend API
  * this is API design
  */
-import {
-  useMutation,
-  useQuery
-} from '@tanstack/react-query';
-
-import { customInstance } from '../../../mutator/custom-instance';
-
-import type {
-  GetApiCustomer200,
-  GetApiSales200,
-  PostApiPayBody,
-  RegisterSchema
-} from '.././model';
 import type {
   DataTag,
   DefinedInitialDataOptions,
@@ -29,254 +16,376 @@ import type {
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
-  UseQueryResult
+  UseQueryResult,
 } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 
-
-
+import { customInstance } from '../../../mutator/custom-instance';
+import type {
+  GetApiCustomer200,
+  GetApiSales200,
+  PostApiPayBody,
+  RegisterSchema,
+} from '.././model';
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
-
-
 
 /**
  * @summary Pay for a table
  */
 export const postApiPay = (
-    postApiPayBody: PostApiPayBody,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  postApiPayBody: PostApiPayBody,
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      const formData = new FormData();
-formData.append('table_number', postApiPayBody.table_number.toString())
+  const formData = new FormData();
+  formData.append('table_number', postApiPayBody.table_number.toString());
 
-      return customInstance<RegisterSchema>(
-      {data: formData, headers: {'Content-Type': 'multipart/form-data', },
+  return customInstance<RegisterSchema>(
+    {
+      data: formData,
+      headers: { 'Content-Type': 'multipart/form-data' },
       method: 'POST',
-       signal, url: `/api/pay`
+      signal,
+      url: `/api/pay`,
     },
-      options);
-    }
-  
+    options,
+  );
+};
 
+export const getPostApiPayMutationOptions = <
+  TError = RegisterSchema,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postApiPay>>,
+    TError,
+    { data: PostApiPayBody },
+    TContext
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof postApiPay>>,
+  TError,
+  { data: PostApiPayBody },
+  TContext
+> => {
+  const mutationKey = ['postApiPay'];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      'mutationKey' in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-export const getPostApiPayMutationOptions = <TError = RegisterSchema,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiPay>>, TError,{data: PostApiPayBody}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof postApiPay>>, TError,{data: PostApiPayBody}, TContext> => {
-    
-const mutationKey = ['postApiPay'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof postApiPay>>,
+    { data: PostApiPayBody }
+  > = (props) => {
+    const { data } = props ?? {};
 
-      
+    return postApiPay(data, requestOptions);
+  };
 
+  return { mutationFn, ...mutationOptions };
+};
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postApiPay>>, {data: PostApiPayBody}> = (props) => {
-          const {data} = props ?? {};
+export type PostApiPayMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postApiPay>>
+>;
+export type PostApiPayMutationBody = PostApiPayBody;
+export type PostApiPayMutationError = RegisterSchema;
 
-          return  postApiPay(data,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type PostApiPayMutationResult = NonNullable<Awaited<ReturnType<typeof postApiPay>>>
-    export type PostApiPayMutationBody = PostApiPayBody
-    export type PostApiPayMutationError = RegisterSchema
-
-    /**
+/**
  * @summary Pay for a table
  */
-export const usePostApiPay = <TError = RegisterSchema,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiPay>>, TError,{data: PostApiPayBody}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof postApiPay>>,
-        TError,
-        {data: PostApiPayBody},
-        TContext
-      > => {
+export const usePostApiPay = <TError = RegisterSchema, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof postApiPay>>,
+      TError,
+      { data: PostApiPayBody },
+      TContext
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof postApiPay>>,
+  TError,
+  { data: PostApiPayBody },
+  TContext
+> => {
+  const mutationOptions = getPostApiPayMutationOptions(options);
 
-      const mutationOptions = getPostApiPayMutationOptions(options);
-
-      return useMutation(mutationOptions , queryClient);
-    }
-    /**
+  return useMutation(mutationOptions, queryClient);
+};
+/**
  * @summary Get all customers
  */
 export const getApiCustomer = (
-    
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<GetApiCustomer200>(
-      {method: 'GET', signal, url: `/api/customer`
-    },
-      options);
-    }
-  
+  return customInstance<GetApiCustomer200>(
+    { method: 'GET', signal, url: `/api/customer` },
+    options,
+  );
+};
 
 export const getGetApiCustomerQueryKey = () => {
-    return [`/api/customer`] as const;
-    }
+  return [`/api/customer`] as const;
+};
 
-    
-export const getGetApiCustomerQueryOptions = <TData = Awaited<ReturnType<typeof getApiCustomer>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiCustomer>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
-) => {
+export const getGetApiCustomerQueryOptions = <
+  TData = Awaited<ReturnType<typeof getApiCustomer>>,
+  TError = unknown,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<Awaited<ReturnType<typeof getApiCustomer>>, TError, TData>
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-const {query: queryOptions, request: requestOptions} = options ?? {};
+  const queryKey = queryOptions?.queryKey ?? getGetApiCustomerQueryKey();
 
-  const queryKey =  queryOptions?.queryKey ?? getGetApiCustomerQueryKey();
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiCustomer>>> = ({
+    signal,
+  }) => getApiCustomer(requestOptions, signal);
 
-  
+  return { queryFn, queryKey, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getApiCustomer>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiCustomer>>> = ({ signal }) => getApiCustomer(requestOptions, signal);
+export type GetApiCustomerQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getApiCustomer>>
+>;
+export type GetApiCustomerQueryError = unknown;
 
-      
-
-      
-
-   return  { queryFn, queryKey, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiCustomer>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
-}
-
-export type GetApiCustomerQueryResult = NonNullable<Awaited<ReturnType<typeof getApiCustomer>>>
-export type GetApiCustomerQueryError = unknown
-
-
-export function useGetApiCustomer<TData = Awaited<ReturnType<typeof getApiCustomer>>, TError = unknown>(
-  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiCustomer>>, TError, TData>> & Pick<
+export function useGetApiCustomer<
+  TData = Awaited<ReturnType<typeof getApiCustomer>>,
+  TError = unknown,
+>(
+  options: {
+    query: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof getApiCustomer>>, TError, TData>
+    > &
+      Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getApiCustomer>>,
           TError,
           Awaited<ReturnType<typeof getApiCustomer>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetApiCustomer<TData = Awaited<ReturnType<typeof getApiCustomer>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiCustomer>>, TError, TData>> & Pick<
+        >,
+        'initialData'
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetApiCustomer<
+  TData = Awaited<ReturnType<typeof getApiCustomer>>,
+  TError = unknown,
+>(
+  options?: {
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof getApiCustomer>>, TError, TData>
+    > &
+      Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getApiCustomer>>,
           TError,
           Awaited<ReturnType<typeof getApiCustomer>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetApiCustomer<TData = Awaited<ReturnType<typeof getApiCustomer>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiCustomer>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+        >,
+        'initialData'
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetApiCustomer<
+  TData = Awaited<ReturnType<typeof getApiCustomer>>,
+  TError = unknown,
+>(
+  options?: {
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof getApiCustomer>>, TError, TData>
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
 /**
  * @summary Get all customers
  */
 
-export function useGetApiCustomer<TData = Awaited<ReturnType<typeof getApiCustomer>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiCustomer>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient 
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+export function useGetApiCustomer<
+  TData = Awaited<ReturnType<typeof getApiCustomer>>,
+  TError = unknown,
+>(
+  options?: {
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof getApiCustomer>>, TError, TData>
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetApiCustomerQueryOptions(options);
 
-  const queryOptions = getGetApiCustomerQueryOptions(options)
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-
-  query.queryKey = queryOptions.queryKey ;
+  query.queryKey = queryOptions.queryKey;
 
   return query;
 }
-
-
 
 /**
  * データベースに保存されている売上情報をすべて取得します。
  * @summary 売上データを取得
  */
 export const getApiSales = (
-    
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  options?: SecondParameter<typeof customInstance>,
+  signal?: AbortSignal,
 ) => {
-      
-      
-      return customInstance<GetApiSales200>(
-      {method: 'GET', signal, url: `/api/sales`
-    },
-      options);
-    }
-  
+  return customInstance<GetApiSales200>(
+    { method: 'GET', signal, url: `/api/sales` },
+    options,
+  );
+};
 
 export const getGetApiSalesQueryKey = () => {
-    return [`/api/sales`] as const;
-    }
+  return [`/api/sales`] as const;
+};
 
-    
-export const getGetApiSalesQueryOptions = <TData = Awaited<ReturnType<typeof getApiSales>>, TError = void>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSales>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
-) => {
+export const getGetApiSalesQueryOptions = <
+  TData = Awaited<ReturnType<typeof getApiSales>>,
+  TError = void,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<Awaited<ReturnType<typeof getApiSales>>, TError, TData>
+  >;
+  request?: SecondParameter<typeof customInstance>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-const {query: queryOptions, request: requestOptions} = options ?? {};
+  const queryKey = queryOptions?.queryKey ?? getGetApiSalesQueryKey();
 
-  const queryKey =  queryOptions?.queryKey ?? getGetApiSalesQueryKey();
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiSales>>> = ({
+    signal,
+  }) => getApiSales(requestOptions, signal);
 
-  
+  return { queryFn, queryKey, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getApiSales>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiSales>>> = ({ signal }) => getApiSales(requestOptions, signal);
+export type GetApiSalesQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getApiSales>>
+>;
+export type GetApiSalesQueryError = void;
 
-      
-
-      
-
-   return  { queryFn, queryKey, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiSales>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
-}
-
-export type GetApiSalesQueryResult = NonNullable<Awaited<ReturnType<typeof getApiSales>>>
-export type GetApiSalesQueryError = void
-
-
-export function useGetApiSales<TData = Awaited<ReturnType<typeof getApiSales>>, TError = void>(
-  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSales>>, TError, TData>> & Pick<
+export function useGetApiSales<
+  TData = Awaited<ReturnType<typeof getApiSales>>,
+  TError = void,
+>(
+  options: {
+    query: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof getApiSales>>, TError, TData>
+    > &
+      Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getApiSales>>,
           TError,
           Awaited<ReturnType<typeof getApiSales>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetApiSales<TData = Awaited<ReturnType<typeof getApiSales>>, TError = void>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSales>>, TError, TData>> & Pick<
+        >,
+        'initialData'
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetApiSales<
+  TData = Awaited<ReturnType<typeof getApiSales>>,
+  TError = void,
+>(
+  options?: {
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof getApiSales>>, TError, TData>
+    > &
+      Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getApiSales>>,
           TError,
           Awaited<ReturnType<typeof getApiSales>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetApiSales<TData = Awaited<ReturnType<typeof getApiSales>>, TError = void>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSales>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+        >,
+        'initialData'
+      >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetApiSales<
+  TData = Awaited<ReturnType<typeof getApiSales>>,
+  TError = void,
+>(
+  options?: {
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof getApiSales>>, TError, TData>
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
 /**
  * @summary 売上データを取得
  */
 
-export function useGetApiSales<TData = Awaited<ReturnType<typeof getApiSales>>, TError = void>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiSales>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient 
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+export function useGetApiSales<
+  TData = Awaited<ReturnType<typeof getApiSales>>,
+  TError = void,
+>(
+  options?: {
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof getApiSales>>, TError, TData>
+    >;
+    request?: SecondParameter<typeof customInstance>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetApiSalesQueryOptions(options);
 
-  const queryOptions = getGetApiSalesQueryOptions(options)
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-
-  query.queryKey = queryOptions.queryKey ;
+  query.queryKey = queryOptions.queryKey;
 
   return query;
 }
-
-
-

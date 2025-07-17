@@ -2,19 +2,31 @@
 
 namespace App\Http\Controllers;
 
+// ファサード
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+
+// リクエストバリデーション
 use App\Http\Requests\Product\ProductCreateRequest;
 use App\Http\Requests\Product\ProductUpdateRequest;
+use App\Http\Requests\Product\ProductDeleteRequest;
+
+// ビジネスロジック
 use App\UseCase\Product\ProductCreateAction;
 use App\UseCase\Product\ProductGetAction;
 use App\UseCase\Product\ProductUpdateAction;
-use Illuminate\Support\Facades\Auth;
+use App\UseCase\Product\ProductDeleteAction;
+
+// レスポンス整形
 use App\Http\Resources\CreateResource;
 use App\Http\Resources\ErrorResource;
 use App\Http\Resources\ProductResource;
 use App\Http\Resources\SuccessResource;
-use Illuminate\Database\QueryException;
+
+// 例外
 use App\Exceptions\EmptyCollectionException;
+use App\Exceptions\ResourceAccessDenyException;
+use Illuminate\Database\QueryException;
 
 class ProductController extends Controller
 {
@@ -72,6 +84,29 @@ class ProductController extends Controller
                 'error' => '名前が重複しています。',
                 'message' => $e->getMessage()
             ])->response()->setStatusCode(400);
+        }
+    }
+    public function delete(ProductDeleteRequest $request, ProductDeleteAction $action, $id)
+    {
+        $user = Auth::user();
+
+        try {
+            return new SuccessResource(
+                $action($id, $user)
+            )->withMessage("データの削除に成功しました。")
+             ->response()->setStatusCode(200);
+        } catch (EmptyCollectionException $e) {
+            Log::error("存在しないidです。");
+            return new ErrorResource([
+                'error' => '存在しないidです。',
+                'message' => $e->getMessage()
+            ])->response()->setStatusCode(400);
+        } catch (ResourceAccessDenyException $e) {
+            Log::error("そのユーザでアクセスできません。");
+            return new ErrorResource([
+                'error' => 'そのユーザでアクセスできません',
+                'message' => $e->getMessage()
+            ])->response()->setStatusCode(401);
         }
     }
 }

@@ -8,6 +8,6 @@ class EmptyCollectionException extends Exception
 {
     public function __construct(string $message = 'データが見つかりませんでした。') 
     {
-        parent::construct($message);
+        parent::__construct($message);
     }
 }

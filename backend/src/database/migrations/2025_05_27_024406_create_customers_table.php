@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('customers', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('table_number');
+            $table->unsignedInteger('table_number')->unique()->index();
             $table->boolean('paycheck')->default(false);
             $table->unsignedBigInteger('price')->default(0);
             $table->unsignedBigInteger('user_id');

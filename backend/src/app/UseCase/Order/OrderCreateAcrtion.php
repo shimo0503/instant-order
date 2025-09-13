@@ -13,17 +13,15 @@ class OrderCreateAction
 {
     public function __invoke(int $table_num, array $products, User $user)
     {
-        // 既に存在するかチェック
         if (Customer::where('table_number', $table_num)->exists()) {
             throw new CustomerExistException('そのお客様は既に存在しています。');
         }
 
         DB::transaction(function () use ($table_num, $products, $user) {
-            // まず Customer を保存して ID を確定させる
             $customer = new Customer();
             $customer->table_number = $table_num;
             $customer->user_id = $user->id;
-            $customer->price = 0; // 一旦 0 にして後で更新してもよい
+            $customer->price = 0;
             $customer->save();
 
             $data = [];

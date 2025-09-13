@@ -23,7 +23,8 @@ class OrderController extends Controller
     {
         $credentials = $request->validated();
         try {
-            return OrderResource::collection($action($credentials['table_number'], $credentials['products'], Auth::user()));
+            $action($credentials['table_number'], $credentials['products'], Auth::user());
+            return $this->success('注文に成功しました。');
         } catch (CustomerExistExceptions $e) {
             return $this->error($e->message(), 400);
         }
@@ -32,7 +33,8 @@ class OrderController extends Controller
     {
         $credentials = $request->validated();
         try {
-            return OrderResource::collection($action($credentials['table_number'], $credentials['products'], Auth::user()));
+            $action($credentials['table_number'], $credentials['products'], Auth::user());
+            return $this->success('注文に成功しました。');
         } catch (CustomerExistExceptions $e) {
             return $this->error($e->message(), 400);
         }

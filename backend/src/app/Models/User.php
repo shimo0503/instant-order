@@ -35,18 +35,18 @@ class User extends Authenticatable implements JWTSubject
     }
 
     public function customers() {
-        return $this->belongsTo(Customer::class);
+        return $this->hasMany(Customer::class);
     }
 
     public function orders() {
-        return $this->belongsTo(Order::class);
+        return $this->hasMany(Order::class);
     }
 
     public function products() {
-        return $this->belongsTo(Product::class);
+        return $this->hasMany(Product::class);
     }
 
     public function sales() {
-        return $this->belongsTo(Sale::class);
+        return $this->hasMany(Sale::class);
     }
 }

@@ -3,19 +3,19 @@
 namespace App\UseCase\Order;
 
 use Illuminate\Support\Facades\DB;
-use App\UseCase\CustomerDoesNotExistException;
+use App\UseCase\Order\Exceptions\CustomerDoesNotExistException;
 use App\Models\Order;
 use App\Models\User;
 use App\Models\Customer;
 use App\Models\Product;
 
-class OrderCreateAction
+class OrderAddAction
 {
     public function __invoke(int $table_num, array $products, User $user)
     {
         $customer = Customer::where('table_number', $table_num)->first();
         if (!$customer) {
-            throw new CustomerDoesNotExistException('そのお客様は既に存在しています。');
+            throw new CustomerDoesNotExistException('そのテーブルはまだ使われていません。');
         }
 
         DB::transaction(function () use ($table_num, $products, $user, $customer) {
@@ -24,13 +24,13 @@ class OrderCreateAction
             $now = now();
 
             foreach ($products as $product) {
-                $prod = Product::findOrFail($product->id);
-                $sum_price += $prod->price * $product->quantity;
+                $prod = Product::findOrFail($product['id']);
+                $sum_price += $prod->price * $product['quantity'];
 
                 $data[] = [
-                    'quantity'    => $product->quantity,
+                    'quantity'    => $product['quantity'],
                     'customer_id' => $customer->id,
-                    'product_id'  => $product->id,
+                    'product_id'  => $product['id'],
                     'user_id'     => $user->id,
                     'created_at'  => $now,
                     'updated_at'  => $now,

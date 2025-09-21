@@ -18,10 +18,7 @@ use App\UseCase\Product\ProductUpdateAction;
 use App\UseCase\Product\ProductDeleteAction;
 
 // レスポンス整形
-use App\Http\Resources\CreateResource;
-use App\Http\Resources\ErrorResource;
 use App\Http\Resources\ProductResource;
-use App\Http\Resources\SuccessResource;
 
 // 例外
 use App\Exceptions\EmptyCollectionException;
@@ -37,28 +34,19 @@ class ProductController extends Controller
         $user = Auth::user();
         
         try {
-            return new CreateResource(
+            return new ProductResource(
                 $action($product_data['name'], $product_data['price'], $product_data['rest'], $user)
-            )->response()->setStatusCode('201');
+            );
         } catch(QueryException $e) {
-            Log::error("商品作成に失敗しました。");
-            return new ErrorResource([
-                'error' => '商品作成に失敗しました。',
-                'message' => $e->getMessage()
-            ])->response()->setStatusCode(401);
+            Log::error("エラー内容" . $e);
+            return $this->error('商品作成に失敗しました。');
         }
     }
     
     public function read(ProductGetAction $action)
     {
         $user = Auth::user();
-        return new SuccessResource(
-            ProductResource::collection(
-                $action($user)
-            )
-        )
-        ->withMessage('商品の取得に成功しました。')
-        ->response()->setStatusCode(200);
+        return ProductResource::collection($action($user));
     }
 
     public function update(ProductUpdateRequest $request, ProductUpdateAction $action)
@@ -67,23 +55,13 @@ class ProductController extends Controller
         $user = Auth::user();
 
         try {
-            return new SuccessResource(
-                new ProductResource($action($product_data, $user))
-            )
-            ->withMessage('商品の更新に成功しました。')
-            ->response()->setStatusCode(200);
+            return new ProductResource($action($product_data, $user));
         } catch (EmptyCollectionException $e) {
-            Log::error("商品の更新に失敗しました。");
-            return new ErrorResource([
-                'error' => '商品の更新に失敗しました。',
-                'message' => $e->getMessage()
-            ])->response()->setStatusCode(400);
+            Log::error("エラー" . $e->getMessage());
+            return $this->error($e->getMessage(), 400);
         } catch (QueryException $e) {
-            Log::error("名前が重複しています。");
-            return new ErrorResource([
-                'error' => '名前が重複しています。',
-                'message' => $e->getMessage()
-            ])->response()->setStatusCode(400);
+            Log::error("エラー", $e->getMessage());
+            return $this->error($e->getMessage(), 400);
         }
     }
     public function delete(ProductDeleteRequest $request, ProductDeleteAction $action, $id)
@@ -91,22 +69,14 @@ class ProductController extends Controller
         $user = Auth::user();
 
         try {
-            return new SuccessResource(
-                $action($id, $user)
-            )->withMessage("データの削除に成功しました。")
-             ->response()->setStatusCode(200);
+            $action($id, $user);
+            return $this->success("データの削除に成功しました。", 200);
         } catch (EmptyCollectionException $e) {
-            Log::error("存在しないidです。");
-            return new ErrorResource([
-                'error' => '存在しないidです。',
-                'message' => $e->getMessage()
-            ])->response()->setStatusCode(400);
+            Log::error("エラー" . $e->getMessage());
+            return $this->error($e->getMessage(), 400);
         } catch (ResourceAccessDenyException $e) {
-            Log::error("そのユーザでアクセスできません。");
-            return new ErrorResource([
-                'error' => 'そのユーザでアクセスできません',
-                'message' => $e->getMessage()
-            ])->response()->setStatusCode(401);
+            Log::error("エラー" . $e->getMessage());
+            return $this->error($e->getMessage(), 400);
         }
     }
 }

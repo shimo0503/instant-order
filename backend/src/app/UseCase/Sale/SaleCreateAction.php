@@ -12,7 +12,7 @@ class SaleCreateAction
 {
     public function __invoke(int $customer_id, User $user)
     {
-        DB::transaction(function () use ($customer_id, $user) {
+        return DB::transaction(function () use ($customer_id, $user) {
             $customer = Customer::find($customer_id);
             if ($customer === null) {
                 throw new CustomerDoesNotExistException('その客は存在しません。');
@@ -22,8 +22,7 @@ class SaleCreateAction
                 'price' => $customer->price
             ]);
             $customer->delete();
+            return $sale;
         });
-
-        return true;
     }
 }  

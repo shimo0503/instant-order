@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\Request;
 use App\Http\Requests\Auth\LoginRequest;
-use App\Http\Resources\SuccessResource;
-use App\Http\Resources\ErrorResource;
 use App\UseCase\Auth\AuthAction;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -24,10 +22,7 @@ class AuthController extends Controller
         try{
             $token = $auth_action->login($credentials);
 
-            return new SuccessResource(null)
-            ->withMessage('ログインに成功しました。')
-            ->response()
-            ->setStatusCode(200)
+            return $this->success('ログインに成功しました。', 200)
             ->cookie(
                 'token',       // クッキー名
                 $token,               // 値
@@ -40,10 +35,7 @@ class AuthController extends Controller
                 'Strict'              // SameSite
             );
         } catch (AuthenticationException $e) {
-            return new ErrorResource([
-                'error' => 'Unauthorized',
-                'message' => $e->getMessage()
-            ])->response()->setStatusCode(401);
+            return $this->error('ログインに失敗しました。', 401);
         }
     }
 
@@ -56,9 +48,7 @@ class AuthController extends Controller
                 JWTAuth::setToken($token)->invalidate();
             }
 
-            return new SuccessResource(null)
-            ->withMessage('ログアウトに成功しました。')
-            ->response()->setStatusCode(200)
+            return $this->success('ログアウトに成功しました。', 200)
             ->cookie(
                 'token',
                 '', // 空にする
@@ -69,10 +59,7 @@ class AuthController extends Controller
                 true
             );
         } catch (\Exception $e) {
-            return new ErrorResource([
-                'error' => 'ログアウト中にエラーが発生しました。',
-                'message' => $e->getMessage()
-            ])->response()->setStatusCode(400);
+            return $this->error('ログアウト中にエラーが発生しました。', 400);
         }
     }
 }

@@ -21,7 +21,7 @@ class SaleController extends Controller
     {
         $credentials = $request->validated();
         try {
-            $action($credentials['customer_id'], Auth::user());
+            return new SaleResource($action($credentials['customer_id'], Auth::user()));
         } catch (CustomerDoesNotExistException $e) {
             return $this->error($e->getMessage(), 404);
         } catch (QueryException $e) {

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\ErrorResource;
 use Illuminate\Support\Facades\Log;
 use App\Http\Requests\User\UserRegisterRequest;
 use App\Http\Resources\CreateResource;
@@ -16,15 +15,11 @@ class UserController extends Controller
         $userdata = $request->validated();
 
         try {
-            return new CreateResource(
-                $action($userdata['email'], $userdata['password'])
-            )->response()->setStatusCode('201');
+            $action($userdata['email'], $userdata['password']);
+            return $this->success("ユーザ作成に成功しました。", 201);
         } catch(QueryException $e) {
             Log::error("ユーザ作成に失敗しました。");
-            return new ErrorResource([
-                'error' => 'ユーザ作成に失敗しました。',
-                'message' => $e->getMessage()
-            ])->response()->setStatusCode(401);
+            return $this->error('ユーザ作成に失敗しました。', 500);
         }
     }
 }

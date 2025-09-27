@@ -25,7 +25,7 @@ const Home = () => {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="bg-white p-8 rounded shadow-md">
-        <h1 className="text-2xl text-center font-bold mb-4">ログイン</h1>
+        <h1 className="text-2xl text-center font-bold mb-4">ユーザ登録</h1>
         <form className="flex flex-col w-full items-center space-y-3" onSubmit={handleSubmit(Login)}>
           <input type="email" {...register('email')} placeholder="メールアドレス" className="border border-gray-300 rounded px-2 py-1">
             {errors.email && (
@@ -41,14 +41,8 @@ const Home = () => {
               </div>
             )}
           </input>
-          <div>
-            新規登録は
-            <a href="/register" className="text-blue-500">
-              こちら
-            </a>
-          </div>
           <button className="w-full rounded-lg bg-teal-500 px-3 py-2 text-lg font-semibold text-white focus:outline-none" type="submit">
-            ログイン
+            登録
           </button>
         </form>
       </div>
